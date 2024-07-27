@@ -1,20 +1,16 @@
 const express = require("express");
-const app = express();
-const port = process.env.PORT || 4000;
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
 const TelegramBot = require("node-telegram-bot-api");
 const fs = require("fs");
 
+const app = express();
+const port = process.env.PORT || 3000;
+
 const token = "7116379634:AAEFfXsLTml5I9BQ7_Mh-xFij4CkjoS7_t0";
 const bot = new TelegramBot(token, { polling: true });
+
+app.get("/", (req, res) => {
+  res.send("Telegram bot is running");
+});
 
 bot.onText(/\/start|\/help/, (msg) => {
   const welcomeMessage = `
@@ -74,7 +70,9 @@ bot.on("callback_query", (callbackQuery) => {
         .join("\n");
 
     bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
-  } else if (data === "uc") {
-    bot.sendMessage(chatId, "Karta Raqam", "464646");
   }
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
