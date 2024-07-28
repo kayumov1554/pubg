@@ -1,6 +1,5 @@
 const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
-const fs = require("fs");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -41,60 +40,67 @@ bot.onText(/\/start|\/help/, (msg) => {
     },
   };
 
-  bot.sendMessage(msg.chat.id, welcomeMessage, options).then((sentMessage) => {
-    // Save the message ID to edit it later
-    bot.on("callback_query", (callbackQuery) => {
-      const msg = callbackQuery.message;
-      const data = callbackQuery.data;
-      const chatId = msg.chat.id;
-      const messageId = sentMessage.message_id;
+  bot.sendMessage(msg.chat.id, welcomeMessage, options);
+});
 
-      if (data === "uc") {
-        const ucPrices = [
-          { uc: "60-UC", price: "12.000 so'm" },
-          { uc: "120-UC", price: "25.000 so'm" },
-          { uc: "180-UC", price: "38.000 so'm" },
-          { uc: "350-UC", price: "55.000 so'm" },
-          { uc: "600-UC", price: "100.000 so'm" },
-          { uc: "900-UC", price: "150.000 so'm" },
-          { uc: "1240-UC", price: "270.000 so'm" },
-          { uc: "1870-UC", price: "350.000 so'm" },
-        ];
+bot.on("callback_query", (callbackQuery) => {
+  const msg = callbackQuery.message;
+  const data = callbackQuery.data;
+  const username = callbackQuery.from.username || "@MUSAAUC";
 
-        const message =
-          "<b>MUSAA_PUBG_UC narxlari</b>\n\n" +
-          ucPrices
-            .map(
-              (price) =>
-                `<pre>${price.uc.padEnd(10)}: ${price.price.padStart(10)}</pre>`
-            )
-            .join("\n");
+  if (data === "uc") {
+    bot.deleteMessage(msg.chat.id, msg.message_id); // Welcome message ni o'chirish
+    const ucPrices = `
+<b>UC NARXLARI</b>
 
-        bot
-          .editMessageText(message, {
-            chat_id: chatId,
-            message_id: messageId,
-            parse_mode: "HTML",
-            reply_markup: {
-              inline_keyboard: [
-                [{ text: "Sotib olish", url: "https://t.me/kayumov_1554" }],
-              ],
-            },
-          })
-          .then(() => {
-            const cardInfo = `
-              <b>CARD INFO</b>
-              <pre>CARD-4046320002166858</pre>
-              <pre>Ism-MuhammadSodiq</pre>
-              <pre>Familiya-Kayumov</pre>
-            `;
-            bot.sendMessage(chatId, cardInfo, { parse_mode: "HTML" });
-          });
-      }
-    });
-  });
+Biz ish faoliyatimizni boshladik @MUSAAUC
+       
+Boshqa UC hizmatlaridan bizning asosiy ajralib turadigan farqimiz bu - ✅ <b>TEZLIKDIR</b> ✅
+
+🌐<b>Global versiya uchun 🆔 orqali:</b>
+
+60 UC 13.000uzs - 99₽
+120 UC 25.000uzs - 192₽
+180 UC 36.000uzs - 275₽
+355 UC 58.000uzs - 477₽
+385 UC 69.000uzs - 530₽ 
+720 UC 115.000uzs - 885₽ 
+1075 UC 175.000uzs - 1350₽
+1440 UC 228.000uzs - 1750₽
+1950 UC 290.000uzs - 2230₽
+2305 UC 340.000uzs - 2615₽
+2670 UC 395.000uzs - 3040₽
+4000 UC 570.000uzs -  4390₽
+8400 UC 1.150.000uzs - 8850₽
+
+➖➖➖➖➖➖
+
+<b>✅ Login Parol orqali UC narxlari ✅</b>
+
+🆔 orqali sotib olgandan ko'ra anchagina arzonga ko'proq UC olasiz.
+
+3850 UC 495.000uzs - 3900
+8100 UC 960.000uzs - 7400
+16.200 UC 1.920.000uzs - 14800
+24.300 UC 2.850.000uzs - 21950
+👑 Undan ko'proq UC kerak bo'lsa kelishamiz ✔ 🤝
+`;
+
+    const options = {
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "Sotib olish", url: `https://t.me/${username}` }],
+        ],
+      },
+    };
+
+    bot.sendMessage(msg.chat.id, ucPrices, options);
+  }
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// 7116379634:AAEFfXsLTml5I9BQ7_Mh-xFij4CkjoS7_t0
