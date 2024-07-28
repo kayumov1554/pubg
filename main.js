@@ -46,10 +46,10 @@ bot.onText(/\/start|\/help/, (msg) => {
 bot.on("callback_query", (callbackQuery) => {
   const msg = callbackQuery.message;
   const data = callbackQuery.data;
-  const username = callbackQuery.from.username || "@MUSAAUC";
+  const chatId = msg.chat.id;
+  const messageId = msg.message_id;
 
   if (data === "uc") {
-    bot.deleteMessage(msg.chat.id, msg.message_id); // Welcome message ni o'chirish
     const ucPrices = `
 <b>UC NARXLARI</b>
 
@@ -90,12 +90,17 @@ Boshqa UC hizmatlaridan bizning asosiy ajralib turadigan farqimiz bu - ✅ <b>TE
       parse_mode: "HTML",
       reply_markup: {
         inline_keyboard: [
-          [{ text: "Sotib olish", url: `https://t.me/${username}` }],
+          [{ text: "Sotib olish", url: "https://t.me/musaa_uc" }],
         ],
       },
     };
 
-    bot.sendMessage(msg.chat.id, ucPrices, options);
+    bot.editMessageText(ucPrices, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: "HTML",
+      reply_markup: options.reply_markup,
+    });
   }
 });
 
