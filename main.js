@@ -13,19 +13,16 @@ app.get("/", (req, res) => {
 
 bot.onText(/\/start|\/help/, (msg) => {
   const welcomeMessage = `
-    <b>Assalomu aleykum Xush Kelibsiz!</b>
-    
-    <b>Botimizdan foydalanish Bepul</b>
+<b>Assalomu aleykum Xush Kelibsiz!</b>
+<pre><b>UC narxlari</b>
 
-    <b>UC narxlari</b> 
-    <b></b>
-    <b>UC Lobbilar</b>
-    <b></b>
-    <b>Konkurslar</b>
-    <b></b>
-    <b>Bizni Kuzatib Boring</b>
+<b>UC Lobbilar</b>
 
-    <b>Kanalimiz sslikasi👇</b>
+<b>Konkurslar</b>
+
+<b>Acc Savdo</b>
+</pre><b>Bizni Kuzatib Boring</b>
+<b>Kanalimiz sslikasi👇</b>
   `;
 
   const options = {
@@ -35,6 +32,7 @@ bot.onText(/\/start|\/help/, (msg) => {
         [
           { text: "UC narxlar", callback_data: "uc" },
           { text: "Kanalimiz", url: "https://t.me/musapubgm" },
+          { text: "Savdo", url: "https://t.me/musaa_sale" },
         ],
       ],
     },
@@ -48,6 +46,7 @@ bot.on("callback_query", (callbackQuery) => {
   const data = callbackQuery.data;
   const chatId = msg.chat.id;
   const messageId = msg.message_id;
+  const text = msg.text;
 
   if (data === "uc") {
     const ucPrices = `
